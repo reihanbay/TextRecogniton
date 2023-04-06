@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.FirebaseDatabase
 import com.plusultra.textrecognition.R
 import com.plusultra.textrecognition.databinding.FragmentResultBinding
+import java.util.Date
 
 class ResultFragment : Fragment() {
     private var binding : FragmentResultBinding? = null

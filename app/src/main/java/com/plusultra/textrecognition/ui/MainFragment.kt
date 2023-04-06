@@ -13,11 +13,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.FirebaseDatabase
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.plusultra.textrecognition.databinding.FragmentMainBinding
+import java.util.*
 
 
 class MainFragment : Fragment() {
@@ -25,7 +27,7 @@ class MainFragment : Fragment() {
     private var binding : FragmentMainBinding? = null
     private val bind get() = binding!!
     private var textResult = ""
-    private lateinit var imgBitmap : Bitmap
+    private var imgBitmap : Bitmap? = null
     val REQUEST_IMAGE_CAPTURE = 1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +43,9 @@ class MainFragment : Fragment() {
         initAction()
     }
 
+    private fun notFound() {
+        Snackbar.make(requireView(), "No Text Found", Snackbar.LENGTH_LONG).show()
+    }
     private fun initAction() {
         bind.apply {
             btnDetect.setOnClickListener {
@@ -53,7 +58,24 @@ class MainFragment : Fragment() {
 
             btnNavigate.setOnClickListener {
                 if (textResult.isNotEmpty()) findNavController().navigate(MainFragmentDirections.actionMainFragmentToResutFragment(textResult))
-                else Snackbar.make(requireView(), "No Text Found", Snackbar.LENGTH_LONG).show()
+                else notFound()
+            }
+
+
+
+            btnUpload.setOnClickListener {
+                val ref = FirebaseDatabase.getInstance().getReference("TextRecognition")
+                val trId = ref.push().key
+                val data = mapOf("trId" to "$trId", "Date" to "${Date()}", "Text" to bind.tvResult.text.toString())
+                if (trId != null && textResult.isNotEmpty()) {
+                    val send = ref.child(trId).setValue(data)
+                    send.addOnSuccessListener {
+                        Snackbar.make(requireView(), "Success Upload", Snackbar.LENGTH_LONG).show()
+                    }
+                    send.addOnFailureListener {
+                        Snackbar.make(requireView(), "Failed to Upload ${it.message}", Snackbar.LENGTH_LONG).show()
+                    }
+                } else notFound()
             }
         }
     }
@@ -63,11 +85,7 @@ class MainFragment : Fragment() {
 
         // on below line we are calling a start activity
         // for result method to get the image captured.
-
-        // on below line we are calling a start activity
-        // for result method to get the image captured.
         if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
-            textResult = ""
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         }
     }
@@ -89,24 +107,26 @@ class MainFragment : Fragment() {
 
 
     private fun detect() {
-        val image = InputImage.fromBitmap(imgBitmap, 0)
-        val detector = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+        if (imgBitmap != null) {
+            val image = InputImage.fromBitmap(imgBitmap!!, 0)
+            val detector = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
-        val result = detector.process(image)
-        result.addOnSuccessListener {
-            processText(it)
+            val result = detector.process(image)
+            result.addOnSuccessListener {
+                processText(it)
+            }
+            result.addOnFailureListener {
+                Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_SHORT).show()
+            }
         }
-        result.addOnFailureListener {
-            Toast.makeText(requireContext(), "${it.message}", Toast.LENGTH_SHORT).show()
-        }
-
     }
 
     private fun processText(text: Text) {
 
         if (text.textBlocks.size == 0) {
-            Snackbar.make(requireView(), "No Text Found", Snackbar.LENGTH_LONG).show()
+            notFound()
         }
+
 
         for (block in text.textBlocks) {
             val blockText = block.text

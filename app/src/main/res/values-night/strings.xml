@@ -4,4 +4,5 @@
     <string name="detect">Detect</string>
     <string name="get_picture">Get Picture</string>
     <string name="navigate">Navigate</string>
+    <string name="upload_firebase">Upload Firebase</string>
 </resources>

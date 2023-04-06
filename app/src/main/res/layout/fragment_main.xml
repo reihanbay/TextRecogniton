@@ -1,91 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="24dp"
-    tools:context=".ui.MainFragment">
-
-    <ImageView
-        android:id="@+id/iv_photo"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="240dp"
-        android:layout_height="240dp"/>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_button"
-        android:weightSum="2"
-        app:layout_constraintTop_toBottomOf="@id/iv_photo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center"
-        android:layout_marginTop="16dp"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        tools:context=".ui.MainFragment">
+
+        <ImageView
+            android:id="@+id/iv_photo"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="240dp"
+            android:layout_height="240dp"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_button"
+            android:weightSum="2"
+            app:layout_constraintTop_toBottomOf="@id/iv_photo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_snap"
+                android:layout_width="0dp"
+                android:drawableLeft="@drawable/ic_camera"
+                android:text="@string/snap"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                app:cornerRadius="8dp"/>
+
+            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.2"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_get_picture"
+                android:layout_width="0dp"
+                android:drawableLeft="@drawable/ic_camera"
+                android:text="@string/get_picture"
+                android:textSize="12sp"
+                android:enabled="false"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                app:cornerRadius="8dp"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_button_2"
+            android:weightSum="2"
+            app:layout_constraintTop_toBottomOf="@id/ll_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_detect"
+                android:layout_width="0dp"
+                android:drawableLeft="@drawable/ic_text_fields"
+                android:text="@string/detect"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                app:cornerRadius="8dp"/>
+            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.2"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_navigate"
+                android:layout_width="0dp"
+                android:text="@string/navigate"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                app:cornerRadius="8dp"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_snap"
-            android:layout_width="0dp"
-            android:drawableLeft="@drawable/ic_camera"
-            android:text="@string/snap"
+            android:id="@+id/btn_upload"
+            app:layout_constraintTop_toBottomOf="@id/ll_button_2"
+            android:layout_width="match_parent"
+            android:layout_marginTop="24dp"
+            android:text="@string/upload_firebase"
             android:layout_height="wrap_content"
-            android:layout_weight="0.9"
             app:cornerRadius="8dp"/>
 
-        <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.2"/>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_get_picture"
-            android:layout_width="0dp"
-            android:drawableLeft="@drawable/ic_camera"
-            android:text="@string/get_picture"
-            android:textSize="12sp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.9"
-            app:cornerRadius="8dp"/>
+        <TextView
+            android:id="@+id/tv_result"
+            app:layout_constraintTop_toBottomOf="@id/btn_upload"
+            android:layout_marginTop="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_button_2"
-        android:weightSum="2"
-        app:layout_constraintTop_toBottomOf="@id/ll_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_detect"
-            android:layout_width="0dp"
-            android:drawableLeft="@drawable/ic_text_fields"
-            android:text="@string/detect"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.9"
-            app:cornerRadius="8dp"/>
-        <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.2"/>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_navigate"
-            android:layout_width="0dp"
-            android:text="@string/navigate"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.9"
-            app:cornerRadius="8dp"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <TextView
-        android:id="@+id/tv_result"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="18sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
